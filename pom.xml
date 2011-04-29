@@ -1,0 +1,13 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.mycompany.app</groupId>
+  <artifactId>my-app</artifactId>
+  <version>1</version>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>human-task-server-example</module>
+    <module>human-task-client-example</module>
+    <module>human-task-web-ui-example</module>
+  </modules>
+</project>
