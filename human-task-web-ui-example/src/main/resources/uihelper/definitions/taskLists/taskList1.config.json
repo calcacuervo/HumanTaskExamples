@@ -29,6 +29,11 @@
             "header":"Status",
             "sourceExpresion":"#{status}"
          }
+         ,
+         {
+            "header":"Name",
+            "sourceExpresion":"#{name}"
+         }
      ]
  }
 ]

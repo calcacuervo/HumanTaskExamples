@@ -1,0 +1,46 @@
+[
+ {
+     "profile": "Default",
+     "columns": [
+         {
+            "header":"Id",
+            "sourceExpresion":"#{task:id}"
+         },
+         {
+            "header":"Name",
+            "sourceExpresion":"#{task:name}"
+         },
+         {
+            "header":"priority",
+            "sourceExpresion":"#{task:priority}"
+         },
+         {
+            "header":"Writedocument",
+            "sourceExpresion":"true"
+         }
+     ]
+ },
+ {
+     "profile": "Superuser",
+     "columns": [
+         {
+            "header":"Id",
+            "sourceExpresion":"#{task:id}"
+         }
+         ,
+         {
+            "header":"Name",
+            "sourceExpresion":"#{task:name}"
+         },
+         {
+            "header":"Priority",
+            "sourceExpresion":"#{task:priority}"
+         }
+         ,
+         {
+            "header":"Status",
+            "sourceExpresion":"#{task:status}"
+         }
+     ]
+ }
+]

@@ -1,0 +1,50 @@
+[
+ {
+     "profile": "Default",
+     "columns": [
+         {
+            "header":"Id",
+            "sourceExpresion":"#{task:id}"
+         },
+         {
+            "header":"Name",
+            "sourceExpresion":"#{task:name}"
+         },
+         {
+            "header":"priority",
+            "sourceExpresion":"#{task:priority}"
+         },
+         {
+            "header":"Document:",
+            "sourceExpresion":""
+         }
+     ]
+ },
+ {
+     "profile": "SuperUser",
+     "columns": [
+         {
+            "header":"Id",
+            "sourceExpresion":"#{task:id}"
+         }
+         ,
+         {
+            "header":"Name",
+            "sourceExpresion":"#{task:name}"
+         },
+         {
+            "header":"Priority",
+            "sourceExpresion":"#{task:priority}"
+         }
+         ,
+         {
+            "header":"Status",
+            "sourceExpresion":"#{task:status}"
+         },
+         {
+            "header":"Write Document Specific",
+            "sourceExpresion":"Write Document"
+         }
+     ]
+ }
+]

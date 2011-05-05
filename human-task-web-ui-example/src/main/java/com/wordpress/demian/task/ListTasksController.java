@@ -1,10 +1,9 @@
 package com.wordpress.demian.task;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.hibernate.mapping.Array;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -19,6 +18,8 @@ import com.wordpress.salaboy.smarttasks.uihelper.api.ConnectionData;
 import com.wordpress.salaboy.smarttasks.uihelper.api.SmartTaskUIHelper;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListDataSet;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListUIHelper;
+import com.wordpress.salaboy.smarttasks.uihelper.api.TaskOperationsDefinition;
+import com.wordpress.salaboy.smarttasks.uihelper.api.TaskSupportUIHelper;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfigurationProvider;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.saxhandler.JBPM5ConfigurationHandler;
@@ -34,7 +35,24 @@ public class ListTasksController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(ListTasksController.class);
 
-	//TODO it should not be needed
+	SmartTaskUIHelper helper;
+
+	public ListTasksController() {
+		MetaTaskDecoratorService.getInstance().registerDecorator("base",
+				new MetaTaskDecoratorBase());
+		File root = new File(Thread.currentThread().getContextClassLoader()
+				.getResource("uihelper").getFile());
+		UIHelperConfigurationProvider configurationProvider = new UIHelperConfigurationProvider(
+				root);
+		configurationProvider
+				.addUIHelperConfigurationUriHandler(new JBPM5ConfigurationHandler());
+		UIHelperConfiguration config = configurationProvider
+				.createConfiguration();
+		helper = new SmartTaskUIHelper(config);
+
+	}
+
+	// TODO it should not be needed
 	@RequestMapping(value = "/new/")
 	public String start(Model model) {
 		return "start";
@@ -42,6 +60,7 @@ public class ListTasksController {
 
 	/**
 	 * This method gets the task list using the UIHelper classes.
+	 * 
 	 * @param entity
 	 * @param profile
 	 * @param model
@@ -51,25 +70,65 @@ public class ListTasksController {
 	public String list(@PathVariable("entity") String entity,
 			@PathVariable("profile") String profile, Model model) {
 		logger.info("Let's get the Task List!");
-		MetaTaskDecoratorService.getInstance().registerDecorator("base", new MetaTaskDecoratorBase());
-		File root = new File(Thread.currentThread().getContextClassLoader()
-				.getResource("uihelper").getFile());
-		UIHelperConfigurationProvider configurationProvider = new UIHelperConfigurationProvider(root);
-		configurationProvider.addUIHelperConfigurationUriHandler(new JBPM5ConfigurationHandler());
-		UIHelperConfiguration config = configurationProvider.createConfiguration();
-        SmartTaskUIHelper helper = new SmartTaskUIHelper(config);
-        ConnectionData connectionData = new ConnectionData();
-        connectionData.setEntityId(entity);
-        helper.connect(connectionData);
-        TaskListUIHelper taskListHelper = helper.getTaskListHelper("taskList1", profile);
-        TaskListDataSet set = taskListHelper.getDataSet(0, taskListHelper.getDataCount());
-        String[][] data = set.getData();
-        model.addAttribute("data", data);
-        String[] headers = taskListHelper.getColumnHeaders();
-        model.addAttribute("headers", headers);
-		model.addAttribute("user",entity);
+		ConnectionData connectionData = new ConnectionData();
+		connectionData.setEntityId(entity);
+		helper.connect(connectionData);
+		TaskListUIHelper taskListHelper = helper.getTaskListHelper("taskList1",
+				profile);
+		TaskListDataSet set = taskListHelper.getDataSet(0,
+				taskListHelper.getDataCount());
+		String[][] data = set.getData();
+		model.addAttribute("data", data);
+
+		String[] headers = taskListHelper.getColumnHeaders();
+		model.addAttribute("headers", headers);
+		int idIndex = -1;
+		for (int i = 0; i < headers.length; i++) {
+			String string = headers[i];
+			if (string.equalsIgnoreCase("id")) {
+				model.addAttribute("idIndex", i);
+				idIndex = i;
+			}
+		}
+		Map<String, String> taskNames = new HashMap();
+		int nameIndex = -1;
+		for (int i = 0; i < headers.length; i++) {
+			String string = headers[i];
+			if (string.equalsIgnoreCase("name")) {
+				nameIndex = i;
+			}
+		}
+		for (int i = 0; i < data.length; i++) {
+			String[] allData = data[i];
+			taskNames.put(allData[idIndex], allData[nameIndex].replaceAll(" ", ""));
+		}
+		model.addAttribute("taskNames", taskNames);
+		model.addAttribute("user", entity);
 		model.addAttribute("profile", profile);
 		return "list";
+	}
+
+	@RequestMapping(value = "/task/{entity}/{profile}/{id}/{name}", method = RequestMethod.GET)
+	public String taskInfo(@PathVariable("id") String id,
+			@PathVariable("entity") String entity,
+			@PathVariable("name") String name,
+			@PathVariable("profile") String profile, Model model) {
+		logger.info("Let's get the Task List!");
+		ConnectionData connectionData = new ConnectionData();
+		connectionData.setEntityId(entity);
+		helper.connect(connectionData);
+		TaskSupportUIHelper taskHelper = helper.getTaskSupportHelper(id, name.trim(), profile);
+		Map<String, String> taskInfo = taskHelper.getTaskDetails();
+		
+		Map<String, String> taskInputs = taskHelper.getTaskFormInputs();
+		TaskOperationsDefinition operationsDef = taskHelper.getTaskOperations();
+		model.addAttribute("operations", operationsDef);
+		model.addAttribute("taskInfo", taskInfo);
+		model.addAttribute("taskInputs", taskInputs);
+		model.addAttribute("user", entity);
+		model.addAttribute("profile", profile);
+		model.addAttribute("id", taskInfo.get("Id"));
+		return "task";
 	}
 
 }

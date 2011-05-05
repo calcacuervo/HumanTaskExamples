@@ -38,10 +38,17 @@ table.sample td {
 			<td><b>${headerValue}</b></td>
 		</#list>
 	</tr>
+	
 	<#list data as row>
 		<tr>
+			<#assign i=0>
 			<#list row as cell>
-				<td>${cell}</td>
+				<#if i == idIndex>
+					<td><a href="/human-task-web-ui-example/task/${user}/${profile}/${cell}/${taskNames[cell]}">${cell}</a></td>
+				<#else>
+					<td>${cell}</td>
+				</#if>
+				<#assign i=i+1>
 			</#list>
 		</tr>
 	</#list>
