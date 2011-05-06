@@ -14,6 +14,7 @@ This is work on progress and ideas are welcome.
 Currently, to run a whole example, follow these steps:
 -In human-task-server-example, compile it, and then mvn exec:java. It will start the server.
 -In human-task-client-example, compile it and then mvn exec:java. It will open a UI with the users from a sample process located in human-task-client-example/src/main/resources/rules/humanTask.bpmn. It allow to complete the process and view a report of finished processes.
+-In human-task-client-example-activiti, compile it and then mvn exec:java. It will open a UI with the users from a sample process located in human-task-client-example/src/main/resources/rules/humanTask.xml. It allow to complete the process and view a report of finished processes.
 -In human-task-web-ui-example, compile it and run mvn jetty:run. Then go to http://localhost:8080/human-task-web-ui-example/new/ and you can check give a user and profile (predefined in the project) and see the task list.
 
 I will try to explain the ideas behind my projects in my personal blog:

@@ -22,6 +22,7 @@ import com.wordpress.salaboy.smarttasks.uihelper.api.TaskOperationsDefinition;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskSupportUIHelper;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfigurationProvider;
+import com.wordpress.salaboy.smarttasks.uihelper.configuration.saxhandler.ActivitiConfigurationHandler;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.saxhandler.JBPM5ConfigurationHandler;
 
 /**
@@ -46,6 +47,8 @@ public class ListTasksController {
 				root);
 		configurationProvider
 				.addUIHelperConfigurationUriHandler(new JBPM5ConfigurationHandler());
+		configurationProvider
+				.addUIHelperConfigurationUriHandler(new ActivitiConfigurationHandler());
 		UIHelperConfiguration config = configurationProvider
 				.createConfiguration();
 		helper = new SmartTaskUIHelper(config);
