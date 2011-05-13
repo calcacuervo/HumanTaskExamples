@@ -38,6 +38,8 @@ public class ListTasksController {
 
 	SmartTaskUIHelper helper;
 
+	TaskSupportUIHelper taskHelper = null;
+	
 	public ListTasksController() {
 		MetaTaskDecoratorService.getInstance().registerDecorator("base",
 				new MetaTaskDecoratorBase());
@@ -120,18 +122,41 @@ public class ListTasksController {
 		ConnectionData connectionData = new ConnectionData();
 		connectionData.setEntityId(entity);
 		helper.connect(connectionData);
-		TaskSupportUIHelper taskHelper = helper.getTaskSupportHelper(id, name.trim(), profile);
-		Map<String, String> taskInfo = taskHelper.getTaskDetails();
+		taskHelper = helper.getTaskSupportHelper(id, name.trim(), profile);
+		Map<String, String> taskInfo = taskHelper.getTaskInput();
 		
-		Map<String, String> taskInputs = taskHelper.getTaskFormInputs();
+		Map<String, String> taskOutput = taskHelper.getTaskOutput();
 		TaskOperationsDefinition operationsDef = taskHelper.getTaskOperations();
 		model.addAttribute("operations", operationsDef);
-		model.addAttribute("taskInfo", taskInfo);
-		model.addAttribute("taskInputs", taskInputs);
+		model.addAttribute("taskInput", taskInfo);
+		model.addAttribute("taskOutput", taskOutput);
 		model.addAttribute("user", entity);
 		model.addAttribute("profile", profile);
+		model.addAttribute("name", name);
 		model.addAttribute("id", taskInfo.get("Id"));
 		return "task";
+	}
+
+	@RequestMapping(value = "/task/execute/{entity}/{profile}/{id}/{name}/{action}/{document}", method = RequestMethod.GET)
+	public String executeTask(@PathVariable("id") String taskId,
+			@PathVariable("action") String action,
+			@PathVariable("entity") String entity,
+			@PathVariable("name") String name,
+			@PathVariable("document") String document,
+			@PathVariable("profile") String profile, Model model) {
+		if (taskHelper != null) {
+			taskHelper.executeTaskAction(action, document);
+		}
+		return this.taskInfo(taskId, entity, name, profile, model);
+	}
+	
+	@RequestMapping(value = "/task/execute/{entity}/{profile}/{id}/{name}/{action}", method = RequestMethod.GET)
+	public String executeTask(@PathVariable("id") String taskId,
+			@PathVariable("action") String action,
+			@PathVariable("entity") String entity,
+			@PathVariable("name") String name,
+			@PathVariable("profile") String profile, Model model) {
+		return this.executeTask(taskId, action, entity, name, null,  profile, model);
 	}
 
 }
