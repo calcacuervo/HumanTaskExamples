@@ -12,14 +12,14 @@
              xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
              xmlns:tns="http://www.jboss.org/drools">
 
-  <itemDefinition id="_PdocumentItem" structureRef="String" />
+  <itemDefinition id="_documentItem" structureRef="String" />
   <itemDefinition id="_approval.translatedDocumentItem" structureRef="String" />
   <itemDefinition id="_approval.reviewCommentItem" structureRef="String" />
 
   <process processType="Private" isExecutable="true" id="org.plugtree.training.jbpm.humantasks.client" name="Sample Human Task" tns:packageName="org.plugtree.training.jbpm.humantasks.client" >
 
     <!-- process variables -->
-    <property id="Pdocument" itemSubjectRef="_PdocumentItem"/>
+    <property id="Pdocument" itemSubjectRef="_documentItem"/>
     <property id="approval.translatedDocument" itemSubjectRef="_approval.translatedDocumentItem"/>
     <property id="approval.reviewComment" itemSubjectRef="_approval.reviewCommentItem"/>
 
@@ -32,15 +32,15 @@
       <ioSpecification>
         <dataInput id="_8_CommentInput" name="Comment" />
         <dataInput id="_8_SkippableInput" name="Skippable" />
-        <dataInput id="_8_ContentInput" name="Content" />
         <dataInput id="_8_TaskNameInput" name="TaskName" />
+        <dataInput id="_8_ContentInput" name="Content" />
         <dataInput id="_8_PriorityInput" name="Priority" />
         <dataOutput id="_8_ResultOutput" name="Result" />
         <inputSet>
           <dataInputRefs>_8_CommentInput</dataInputRefs>
           <dataInputRefs>_8_SkippableInput</dataInputRefs>
-          <dataInputRefs>_8_ContentInput</dataInputRefs>
           <dataInputRefs>_8_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_8_ContentInput</dataInputRefs>
           <dataInputRefs>_8_PriorityInput</dataInputRefs>
         </inputSet>
         <outputSet>
@@ -62,17 +62,17 @@
         </assignment>
       </dataInputAssociation>
       <dataInputAssociation>
-        <targetRef>_8_ContentInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression"></from>
-          <to xsi:type="tFormalExpression">_8_ContentInput</to>
-        </assignment>
-      </dataInputAssociation>
-      <dataInputAssociation>
         <targetRef>_8_TaskNameInput</targetRef>
         <assignment>
           <from xsi:type="tFormalExpression">Write Document</from>
           <to xsi:type="tFormalExpression">_8_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_8_ContentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_8_ContentInput</to>
         </assignment>
       </dataInputAssociation>
       <dataInputAssociation>
@@ -94,27 +94,23 @@
     </userTask>
     <userTask id="_9" name="Translate Document" >
       <ioSpecification>
-        <dataInput id="_9_ContentInput" name="Content" />
         <dataInput id="_9_CommentInput" name="Comment" />
         <dataInput id="_9_SkippableInput" name="Skippable" />
         <dataInput id="_9_TaskNameInput" name="TaskName" />
+        <dataInput id="_9_DocumentInput" name="Document" />
         <dataInput id="_9_PriorityInput" name="Priority" />
         <dataOutput id="_9_ResultOutput" name="Result" />
         <inputSet>
-          <dataInputRefs>_9_ContentInput</dataInputRefs>
           <dataInputRefs>_9_CommentInput</dataInputRefs>
           <dataInputRefs>_9_SkippableInput</dataInputRefs>
           <dataInputRefs>_9_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_9_DocumentInput</dataInputRefs>
           <dataInputRefs>_9_PriorityInput</dataInputRefs>
         </inputSet>
         <outputSet>
           <dataOutputRefs>_9_ResultOutput</dataOutputRefs>
         </outputSet>
       </ioSpecification>
-      <dataInputAssociation>
-        <sourceRef>Pdocument</sourceRef>
-        <targetRef>_9_ContentInput</targetRef>
-      </dataInputAssociation>
       <dataInputAssociation>
         <targetRef>_9_CommentInput</targetRef>
         <assignment>
@@ -137,6 +133,10 @@
         </assignment>
       </dataInputAssociation>
       <dataInputAssociation>
+      	<sourceRef>Pdocument</sourceRef>
+        <targetRef>_9_DocumentInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
         <targetRef>_9_PriorityInput</targetRef>
         <assignment>
           <from xsi:type="tFormalExpression"></from>
@@ -155,27 +155,23 @@
     </userTask>
     <userTask id="_10" name="Review Document" >
       <ioSpecification>
-        <dataInput id="_10_ContentInput" name="Content" />
         <dataInput id="_10_CommentInput" name="Comment" />
         <dataInput id="_10_SkippableInput" name="Skippable" />
         <dataInput id="_10_TaskNameInput" name="TaskName" />
+        <dataInput id="_10_DocumentInput" name="Document" />
         <dataInput id="_10_PriorityInput" name="Priority" />
         <dataOutput id="_10_ResultOutput" name="Result" />
         <inputSet>
-          <dataInputRefs>_10_ContentInput</dataInputRefs>
           <dataInputRefs>_10_CommentInput</dataInputRefs>
           <dataInputRefs>_10_SkippableInput</dataInputRefs>
           <dataInputRefs>_10_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_10_DocumentInput</dataInputRefs>
           <dataInputRefs>_10_PriorityInput</dataInputRefs>
         </inputSet>
         <outputSet>
           <dataOutputRefs>_10_ResultOutput</dataOutputRefs>
         </outputSet>
       </ioSpecification>
-      <dataInputAssociation>
-        <sourceRef>Pdocument</sourceRef>
-        <targetRef>_10_ContentInput</targetRef>
-      </dataInputAssociation>
       <dataInputAssociation>
         <targetRef>_10_CommentInput</targetRef>
         <assignment>
@@ -196,6 +192,10 @@
           <from xsi:type="tFormalExpression">Review Document</from>
           <to xsi:type="tFormalExpression">_10_TaskNameInput</to>
         </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+      	<sourceRef>Pdocument</sourceRef>
+        <targetRef>_10_DocumentInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
         <targetRef>_10_PriorityInput</targetRef>
@@ -230,7 +230,7 @@
         </outputSet>
       </ioSpecification>
       <dataInputAssociation>
-        <sourceRef>approval.document</sourceRef>
+        <sourceRef>Pdocument</sourceRef>
         <targetRef>_14_DocumentInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>

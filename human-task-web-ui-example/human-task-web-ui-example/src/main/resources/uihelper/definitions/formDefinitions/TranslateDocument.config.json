@@ -1,0 +1,61 @@
+[
+ {
+     "profile": "Default",
+     "inputFields": [
+         {
+            "name":"Id",
+            "sourceExpresion":"#{task:id}"
+         },
+         {
+            "name":"Name",
+            "sourceExpresion":"#{task:name}"
+         },
+         {
+            "name":"Status",
+            "sourceExpresion":"#{task:status}"
+         },
+         {
+            "name":"Dictionary",
+            "sourceExpresion":"#{ext:mockExternalService.getDictionaryForTask(task.id)}"
+         },
+         {
+            "name":"Document",
+            "sourceExpresion":"#{in:Document.document}"
+         }
+     ],
+     "outputFields": [
+         {
+            "name":"Translation",
+            "sourceExpresion":""
+         }
+     ]
+ },
+ {
+     "profile": "SuperUser",
+     "inputFields": [
+         {
+            "name":"Id",
+            "sourceExpresion":"#{task:id}"
+         },
+         {
+            "name":"Priority",
+            "sourceExpresion":"#{task:priority}"
+         },
+         {
+            "name":"Name",
+            "sourceExpresion":"#{task:name}"
+         },
+         {
+            "name":"Document",
+            "sourceExpresion":"#{in:Document.document}"
+         }
+     ],
+     "outputFields": [
+         {
+            "name":"Translation",
+            "sourceExpresion":""
+         }
+     ]
+     
+ }
+ ]
