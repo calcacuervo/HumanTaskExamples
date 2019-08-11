@@ -2,7 +2,7 @@ Human Task Examples\
 
 |Test|Test|Test|
 |-|-|-|
-|test\test|test|test\
+|test test|test|test\test|
 
 In this repository you will find examples related to human tasks, especially using smarttasks project:
 https://github.com/Salaboy/smart-tasks
