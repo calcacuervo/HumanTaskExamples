@@ -111,7 +111,7 @@
     </repositories>
     
     <properties>
-        <jbpm.version>5.1-SNAPSHOT</jbpm.version>
+        <jbpm.version>6.2.0.Final</jbpm.version>
     </properties>
 
 </project>
